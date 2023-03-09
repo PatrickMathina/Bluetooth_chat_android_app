@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/drawable/text_msg_background.xml" value="0.2275" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/layout/activity_device_list.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/layout/activity_main.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/layout/activity_setting.xml" value="0.2" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/layout/activity_splash_screen.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/layout/device_list_item.xml" value="0.2" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/layout/settings_activity.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/menu/menu_device_list.xml" value="0.2" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/menu/menu_main.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/mipmap-anydpi-v26/ic_launcher_icon.xml" value="0.1155" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluChat/app/src/main/res/xml/root_preferences.xml" value="0.24895833333333334" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/dot_disable.xml" value="0.1635" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_add.xml" value="0.21" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_arrow_back.xml" value="0.1685" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_bluetooth.xml" value="0.1" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_bluetooth_searching.xml" value="0.1" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_disable_bluetooth.xml" value="0.1" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_enable_bluetooth.xml" value="0.1" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1945" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_launcher_icon_background.xml" value="0.1" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_search.xml" value="0.1945" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/ic_settings.xml" value="0.1945" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/pat.xml" value="0.21" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/text_msg_background.xml" value="0.176" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/txtMsgBackground.xml" value="0.2545" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/txtconversationbackground.xml" value="0.137" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/drawable/txtmessagebackground.xml" value="0.1" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout-w1240dp/activity_lock.xml" value="0.4" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout-w936dp/activity_lock.xml" value="0.184765625" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/activity_device_list.xml" value="0.264" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/activity_lock.xml" value="0.264" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/activity_login.xml" value="0.1941747572815534" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/activity_main.xml" value="0.264" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/activity_main2.xml" value="0.1941747572815534" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/activity_splash_screen.xml" value="0.264" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/device_list_item.xml" value="0.25" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/layout/switch_item.xml" value="0.25" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/menu/menu_device_list.xml" value="0.264" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/menu/menu_login.xml" value="0.20185185185185187" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/menu/menu_main.xml" value="0.264" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/menu/menu_main2.xml" value="0.25" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/menu/menu_main_activity.xml" value="0.264" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/menu/menu_main_activity2.xml" value="0.4" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/menu/we.xml" value="0.25" />
+        <entry key="..\:/Users/ADMIN/AndroidStudioProjects/BluetoothChatApp/app/src/main/res/mipmap-anydpi-v26/ic_launcher_icon.xml" value="0.1" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.264" />
+      </ProjectState>
+    </option>
+  </component>
+</project>
