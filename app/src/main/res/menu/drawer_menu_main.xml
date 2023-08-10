@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/drawer_settings"
+        android:icon="@drawable/ic_settings"
+        android:title="@string/str_menu_settings" />
+
+
+    <item android:title="@string/str_menu_comm">
+        <menu>
+
+            <item
+                android:id="@+id/drawer_rate"
+                android:icon="@drawable/baseline_star_rate_24"
+                android:title="Rate App" />
+            <item
+                android:id="@+id/drawer_share"
+                android:icon="@drawable/ic_baseline_share_24"
+                android:title="@string/str_menu_share" />
+            <item
+                android:id="@+id/drawer_moreApps"
+                android:icon="@drawable/ic_apps"
+                android:title="More Apps" />
+
+        </menu>
+    </item>
+
+
+    <item android:title="@string/str_help">
+        <menu>
+
+            <item
+                android:id="@+id/drawer_developer"
+                android:icon="@drawable/baseline_person_24"
+                android:title="@string/str_developer" />
+            <item
+                android:id="@+id/drawer_checkUpdates"
+                android:icon="@drawable/ic_update"
+                android:title="@string/str_menu_updates" />
+            <item
+                android:id="@+id/drawer_feedback"
+                android:icon="@drawable/baseline_contact_support_24"
+                android:title="@string/str_menu_help" />
+
+        </menu>
+
+    </item>
+</menu>

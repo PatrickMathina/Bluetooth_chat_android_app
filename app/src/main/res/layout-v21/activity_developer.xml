@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="8dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="8dp"
+    android:layout_marginBottom="8dp"
+    android:columnCount="2"
+    android:columnOrderPreserved="true"
+    android:padding="8dp"
+    android:rowCount="1"
+    android:rowOrderPreserved="true"
+    tools:context=".DeveloperActivity">
+
+   <androidx.cardview.widget.CardView
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_row="0"
+       android:layout_rowWeight="1"
+       android:layout_column="1"
+       android:layout_columnWeight="1"
+       android:layout_gravity="fill"
+       android:layout_marginStart="8dp"
+       android:layout_marginTop="8dp"
+       android:layout_marginEnd="8dp"
+       android:layout_marginBottom="8dp"
+       app:cardCornerRadius="8dp"
+       app:cardElevation="8dp">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:orientation="vertical"
+          android:padding="8dp">
+
+         <ImageView
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:padding="8dp"
+             android:layout_weight="1"
+             android:src="@drawable/developer" />
+
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_weight=".9"
+             android:gravity="center"
+             android:letterSpacing="0.02"
+             android:text="@string/feedback"
+             android:textColor="#2BC3D6"
+             android:textStyle="italic" />
+
+
+         <ImageView
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:onClick="gmail"
+             android:padding="4dp"
+             android:layout_weight=".7"
+             android:src="@drawable/gmail" />
+
+         <TextView
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:layout_weight="0.2"
+             android:gravity="center"
+             android:text="----- OR -----"
+             android:textColor="#2BC3D6"
+             android:textStyle="italic" />
+
+         <ImageView
+             android:layout_width="match_parent"
+             android:layout_height="0dp"
+             android:padding="26dp"
+             android:onClick="whatsApp"
+             android:layout_weight=".7"
+             android:src="@drawable/whatsapp" />
+
+      </LinearLayout>
+       
+   </androidx.cardview.widget.CardView>
+
+</GridLayout>
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="This is Developer Activity "-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
