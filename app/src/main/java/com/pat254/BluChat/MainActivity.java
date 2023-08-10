@@ -2,19 +2,17 @@ package com.pat254.BluChat;
 
 import static com.pat254.BluChat.ChatManager.STATE_CONNECTED;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,18 +20,29 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import java.util.Objects;
-import java.io.FileNotFoundException;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.app.Activity;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.navigation.NavigationView;
+
+import java.io.FileNotFoundException;
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
     //    DBHandler dbHandler;
 //    static int count = 0;
 //    ChatListAdapter mConversationArrayAdapter;
-
-    // CREATING INSTANCES
+    public DrawerLayout drawerLayout;
+    public NavigationView navigationView;
+    public ActionBarDrawerToggle actionBarDrawerToggle;
     private ListView listMainChat;
     private Context context;
     private BluetoothAdapter bluetoothAdapter;
@@ -55,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapterMainChat;
 
     private static final int ADD_PHOTO_REQUEST = 11; //request code to add photo from gallery
-    private static final int MY_GALLERY_PERMISSION_CODE =10; // request code to access EXTERNAL_STORAGE
+    private static final int MY_GALLERY_PERMISSION_CODE = 10; // request code to access EXTERNAL_STORAGE
 
     private static final int CAMERA_REQUEST = 9; //request code to set captured image
     private static final int MY_CAMERA_PERMISSION_CODE = 8; //request code to access CAMERA
@@ -81,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_STATE_CHANGED:
                     switch (message.arg1) {
                         case ChatManager.STATE_NONE:
+//                            setState("Click \"+\" button to add a chatting partner");
+//                            break;
                         case ChatManager.STATE_LISTEN:
                             setState("Not connected");
                             break;
@@ -89,56 +101,29 @@ public class MainActivity extends AppCompatActivity {
                             break;
                         case STATE_CONNECTED:
                             setState("Connected to: " + connectedDevice);
-                            textViewBtVsDiscoverableStatus.setText("");
+                            textViewBtVsDiscoverableStatus.setVisibility(View.GONE);
                             break;
                     }
                     break;
                 case MESSAGE_WRITE:
                     byte[] buffer1 = (byte[]) message.obj;
-//                    Bitmap bitmap1 =(Bitmap) message.obj;
 
                     // construct a string from the buffer
                     String outputBuffer = new String(buffer1);
 //                    String outputBufferBitmap = String.valueOf(bitmap1);
-
                     adapterMainChat.add("Me: " + outputBuffer + "\n");
-//                    adapterMainChat.add("Me: "+ outputBufferBitmap + "\n");
                     break;
                 case MESSAGE_READ:
                     byte[] buffer2 = (byte[]) message.obj;
-//                    Bitmap bitmap2 =(Bitmap) message.obj;
 
                     // construct a string from the valid bytes in the buffer
                     String inputBuffer = new String(buffer2, 0, message.arg1);
-//                    String inputBufferBitmap = new String(bitmap2, 0, message.arg1);
-
-                    adapterMainChat.add("\n"+ connectedDevice + ": " + inputBuffer + "\n");
-//                    adapterMainChat.add("\n"+ connectedDevice + ": " + inputBufferBitmap + "\n");
+                    adapterMainChat.add("\n" + connectedDevice + ": " + inputBuffer + "\n");
                     break;
                 case MESSAGE_DEVICE_NAME:
                     // save and display the connected device's name
                     connectedDevice = message.getData().getString(DEVICE_NAME);
-                    Toast.makeText(context, "Connection Successful. \nConnected to "+connectedDevice, Toast.LENGTH_LONG).show();
-
-//                    count = dbHandler.deviceCheck(connectedDevice);
-//                    int cnt = count;
-//                    if (cnt == 0) {
-//                        ArraySet<Object> conversationArrayAdapter = null;
-//                        assert false;
-//                        conversationArrayAdapter.clear();
-//                    }
-////                    else {
-////                        mConversationArrayAdapter.clear();
-////                        while (cnt != 0) {
-////                            mConversationArrayAdapter.add(printDatabase(connectedDevice, cnt));
-////                            cnt--;
-////                        }
-////                    }
-//
-//                    if (null != context) {
-//                        Toast.makeText(context, "Connected to " + connectedDevice, Toast.LENGTH_SHORT).show();
-//                    }
-
+                    Toast.makeText(context, "Successfully Connected with " + connectedDevice, Toast.LENGTH_LONG).show();
                     break;
                 case MESSAGE_TOAST:
                     Toast.makeText(context, message.getData().getString(TOAST), Toast.LENGTH_SHORT).show();
@@ -148,30 +133,7 @@ public class MainActivity extends AppCompatActivity {
     });
 
 
-//    public MainActivity(ArrayList<String> newData, String connectedDevice) {
-//        this.connectedDevice = connectedDevice;
-//    }
-//
-//    //Saving messages to database.
-//
-//    public void onAddChatMessages(String connDevName, String devName, String text) {
-//        dbHandler.addChatMessages(connDevName, devName, text);
-//
-//    }
-//
-//    //Retrieving messages from database and printing them.
-//    public String printDatabase(String devName, int pos) {
-//
-//        String prevChat = "";
-//
-//        prevChat = dbHandler.databaseToString(devName, count - pos);
-//
-//        return prevChat;
-//    }
-
-
     private void setState(CharSequence subTitle) {
-//        getSupportActionBar().setSubtitle(subTitle);
         Objects.requireNonNull(getSupportActionBar()).setSubtitle(subTitle);
     }
 
@@ -180,27 +142,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        context = this; //initializing context
+        context = this;
+        this.setTitle("Chat With Close Friends");
+        drawerLayout = findViewById(R.id.drawer_layout_chat_screenId);
 
         inBluChat1();
         chatManager = new ChatManager(context, handler);
-        hasBluetooth(); //calling function initBluetooth() which checks if the device support bluetooth
+        hasBluetooth();
 
         if (!bluetoothAdapter.isEnabled()) {
             enableBluetoothOnCreate();
+            btOnOff.setVisibility(View.VISIBLE);
             btOnOff.setText("Bluetooth: OFF\nDiscoverable: NO");
         } else if (bluetoothAdapter.isEnabled() && (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)) {
             Intent dIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
             dIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
             startActivity(dIntent);
+            btOnOff.setVisibility(View.VISIBLE);
             btOnOff.setText(R.string.str_bluetooth_on);
-        } else if (bluetoothAdapter.isEnabled() && (bluetoothAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)){
+        } else if (bluetoothAdapter.isEnabled() && (bluetoothAdapter.getScanMode() == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)) {
+            btOnOff.setVisibility(View.VISIBLE);
             btOnOff.setText("Bluetooth: ON\nDiscoverable: YES");
+            textViewBtVsDiscoverableStatus.setVisibility(View.VISIBLE);
             textViewBtVsDiscoverableStatus.setText("Bluetooth is ON and DISCOVERABLE.\n\nClick the floating button (one with +) at the bottom right to find the chatting partner.");
         }
     }
 
-    //    This will create menu item
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -210,7 +177,12 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int x=item.getItemId();
+
+        if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        int x = item.getItemId();
 //        if (x==R.id.menu_settings)
 //            Intent intent = new Intent(context, Setting.class);
 //            startActivity(intent);
@@ -223,42 +195,106 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         }
-        if (x==R.id.menu_help) {
-            new AlertDialog.Builder(context)
-                    .setCancelable(true)
-                    .setMessage("In any case the connection to other device fails try out the following solutions: \n1. Check if the two devices have bluetooth enabled and discoverable. \n2. Ask the other device to send the chatting request. \n3. Forget the paired devices in device bluetooth settings and try the session newly. \n\nIf none of the solution works please contact\nPhone: +254799858285 \nE-mail: patrickmathina335@gmail.com")
-                    .show();
-        }
-        if (x==R.id.menu_checkUpdates) {
-            this.startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=com.pat254.BluChat")));
-        }
-        if (x==R.id.menu_shareApp) {
-            Intent intent = new Intent("android.intent.action.SEND");
-            intent.setType("text/plain");
-            intent.putExtra("android.intent.extra.TEXT", "Hello there! Have you seen this amazing bluetooth chatting app? Click the link below to get it\n\nhttps://play.google.com/store/apps/details?id=com.pat254.BluChat");
-            this.startActivity(Intent.createChooser(intent, "Share App Using"));
-        }
-        if (x==R.id.menu_moreApps) {
-            this.startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/developer?id=pat254+Conglomerate")));
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     private void inBluChat1() {
+        setState("Not Connected. Click \"+\" button");
+        drawerLayout = findViewById(R.id.drawer_layout_chat_screenId);
+        navigationView = findViewById(R.id.navigationView);
+        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.str_menu_open, R.string.str_menu_close);
+        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        actionBarDrawerToggle.syncState();
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            int n = item.getItemId();
+
+            if (n == android.R.id.home) {
+                onBackPressed();
+                closeDrawer();
+                return true;
+            }
+
+            if (n == R.id.drawer_settings) {
+//                closeDrawer();
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+            }
+
+            if (n == R.id.drawer_rate) {
+//                closeDrawer();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + getPackageName())));
+                } catch (ActivityNotFoundException e) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                }
+                return true;
+            }
+
+            if (n == R.id.drawer_share) {
+//                closeDrawer();
+                Intent intent = new Intent("android.intent.action.SEND");
+                intent.setType("text/plain");
+                intent.putExtra("android.intent.extra.TEXT", "Hey there! Here is an amazing Bluetooth Chat app! It is free and does not require internet connection. Click the link below to download it from Google PlayStore \n\nhttps://play.google.com/store/apps/details?id=com.pat254.BluChat");
+                startActivity(Intent.createChooser(intent, "Share App Using"));
+                return true;
+            }
+
+            if (n == R.id.drawer_moreApps) {
+//                closeDrawer();
+                startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/developer?id=pat254+Conglomerate")));
+                return true;
+            }
+
+            if (n == R.id.drawer_developer) {
+                startActivity(new Intent(getApplicationContext(), DeveloperActivity.class));
+                return true;
+            }
+
+            if (n == R.id.drawer_checkUpdates) {
+//                closeDrawer();
+                startActivity(new Intent("android.intent.action.VIEW", Uri.parse("https://play.google.com/store/apps/details?id=" + getPackageName())));
+                return true;
+            }
+
+            //        if (x==R.id.help) {
+//            new AlertDialog.Builder(context)
+//                    .setCancelable(true)
+//                    .setMessage("In any case the connection to other device fails try out the following solutions: \n1. Check if the two devices have bluetooth enabled and discoverable. \n2. Ask the other device to send the chatting request. \n3. Forget the paired devices in device bluetooth settings and try the session newly. \n\nIf none of the solution works please contact\nPhone: +254799858285 \nE-mail: patrickmathina335@gmail.com")
+//                    .show();
+
+            if (n == R.id.drawer_feedback) {
+//                closeDrawer();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                Uri data = Uri.parse("mailto:?subject=" + "BluChat Feedback" + "&body=" +
+                        "Hey, ... " + "&to=" + "patsofts.help@gmail.com");
+                intent.setData(data);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(), "Type an email", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "No application can handle the operation", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
+
+            return true;
+        });
+
         listMainChat = findViewById(R.id.list_conversation);
-//        getListMainChat2=findViewById(R.id.list_conversationReceiver);
-//        private ListView getListMainChat2;
         ImageView imageViewAddPhoto = findViewById(R.id.add_photo);
         ImageView imageViewStartCamera = findViewById(R.id.start_camera);
         ImageView imageViewEmoji = findViewById(R.id.imgVw_emoji);
         editTxtCreateMessage = findViewById(R.id.ed_enter_message);
         ImageView imageViewSend = findViewById(R.id.imgVw_sendData);
-        imageViewLoadImage=findViewById(R.id.loadImage);
-        textViewDescription=findViewById(R.id.picDescription);
-        textViewBtVsDiscoverableStatus=findViewById(R.id.btVsDiscoverableStatus);
+        imageViewLoadImage = findViewById(R.id.loadImage);
+        textViewDescription = findViewById(R.id.picDescription);
+        textViewBtVsDiscoverableStatus = findViewById(R.id.btVsDiscoverableStatus);
         FloatingActionButton floatingActionButtonAdd = findViewById(R.id.floatingActionAdd);
-        btOnOff=findViewById(R.id.BtOnOff);
+        btOnOff = findViewById(R.id.BtOnOff);
+
         adapterMainChat = new ArrayAdapter<>(context, R.layout.device_list_item);
         listMainChat.setAdapter(adapterMainChat); //setting adapter
 
@@ -272,21 +308,18 @@ public class MainActivity extends AppCompatActivity {
         });
 
         imageViewSend.setOnClickListener(v -> {
-            String description=textViewDescription.getText().toString();
+            String description = textViewDescription.getText().toString();
             String message = editTxtCreateMessage.getText().toString();
 
-
-//                ImageView imageViewLPhoto =imageViewLoadImage.getImage().toString();
             if (!message.isEmpty() || !description.isEmpty() || !imageViewAddPhoto.isEnabled()) {
                 editTxtCreateMessage.setText("");
-                textViewDescription.setText("");
-                imageViewAddPhoto.setImageBitmap(null);
+//                textViewDescription.setText("");
+                textViewDescription.setVisibility(View.GONE);
+//                imageViewAddPhoto.setImageBitmap(null);
                 chatManager.write(message.getBytes());
-//                chatManager.write();
-
 
 //                    onAddChatMessages(connectedDevice, null,message);
-                    Toast.makeText(context, "Sent", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Sent", Toast.LENGTH_SHORT).show();
             }
 //                else { //if (message.isEmpty())  //if message is empty
 ////                    Toast.makeText(context, "Type a message", Toast.LENGTH_SHORT).show();
@@ -302,16 +335,21 @@ public class MainActivity extends AppCompatActivity {
                 Intent dIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                 dIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
                 startActivity(dIntent);
+                btOnOff.setVisibility(View.VISIBLE);
                 btOnOff.setText(R.string.str_bluetooth_on);
             }
         });
+    }
+
+    private void closeDrawer() {
+        drawerLayout.closeDrawer(GravityCompat.START);
     }
 
     private void hasBluetooth() {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (bluetoothAdapter == null) { //checks if the bluetooth adapter is null - means the device has no bluetooth adapter
             Toast.makeText(context, "Bluetooth is not available on this device", Toast.LENGTH_SHORT).show();
-            finish(); //Automatically close the app if no bluetooth found
+            finish();
         }
     }
 
@@ -320,20 +358,20 @@ public class MainActivity extends AppCompatActivity {
         if (!bluetoothAdapter.isEnabled()) {
             new AlertDialog.Builder(context)
                     .setCancelable(false)
-                    .setMessage("Power on Bluetooth?")
-                    .setPositiveButton("YES", (dialogInterface, which) -> {
+                    .setMessage("Turn on Bluetooth?")
+                    .setPositiveButton("Turn On", (dialogInterface, which) -> {
                         if ((bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)) {
                             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                             intent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
                             startActivity(intent);
+                            btOnOff.setVisibility(View.VISIBLE);
                             btOnOff.setText(R.string.str_bluetooth_on);
-                            textViewBtVsDiscoverableStatus.setText("");
-//                                        Toast.makeText(context, "Bluetooth discoverable", Toast.LENGTH_LONG).show();
+                            textViewBtVsDiscoverableStatus.setVisibility(View.GONE);
                         }
                         bluetoothAdapter.enable();
-                        Toast.makeText(context, "Bluetooth enabled", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Bluetooth Enabled", Toast.LENGTH_LONG).show();
                     })
-                    .setNegativeButton("NO", (dialogInterface, which) -> {
+                    .setNegativeButton("Cancel", (dialogInterface, which) -> {
 //                                MainActivity.this.finish(); // close the application
                     })
                     .show();
@@ -345,35 +383,36 @@ public class MainActivity extends AppCompatActivity {
         if (!bluetoothAdapter.isEnabled()) {
             new AlertDialog.Builder(context)
                     .setCancelable(false)
-                    .setMessage("Bluetooth is off. \nPower on Bluetooth?")
-                    .setPositiveButton("YES", (dialogInterface, which) -> {
+                    .setMessage("Bluetooth is turned off. \nPlease Turn On Bluetooth")
+                    .setPositiveButton("Turn On", (dialogInterface, which) -> {
                         if ((bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE)) {
                             Intent dIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                             dIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
                             startActivity(dIntent);
+                            btOnOff.setVisibility(View.VISIBLE);
                             btOnOff.setText(R.string.str_bluetooth_on);
 //                                Toast.makeText(context, "Bluetooth discoverable", Toast.LENGTH_LONG).show();
                         }
                         bluetoothAdapter.enable();
                         Toast.makeText(context, "Bluetooth enabled", Toast.LENGTH_LONG).show();
                     })
-                    .setNegativeButton("NO", (dialogInterface, which) -> {
+                    .setNegativeButton("Cancel", (dialogInterface, which) -> {
 //                                MainActivity.this.finish(); // close the application
-
                         new AlertDialog.Builder(context)
                                 .setCancelable(false)
-                                .setMessage("Bluetooth is required. \nPower on bluetooth?")
-                                .setPositiveButton("YES", (dialogInterface12, which12) -> {
+                                .setMessage("This app requires bluetooth ON for it functionality. \nPlease consider turning on bluetooth")
+                                .setPositiveButton("Turn On", (dialogInterface12, which12) -> {
                                     bluetoothAdapter.enable();
                                     Toast.makeText(context, "Bluetooth enabled", Toast.LENGTH_LONG).show();
                                     Intent dIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                                     dIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
                                     startActivity(dIntent);
+                                    btOnOff.setVisibility(View.VISIBLE);
                                     btOnOff.setText(R.string.str_bluetooth_on);
 //                                                Toast.makeText(context, "Bluetooth discoverable", Toast.LENGTH_LONG).show();
 //                                                enableBluetoothOnCreate(); //check for permission again
                                 })
-                                .setNegativeButton("DENY & EXIT", (dialogInterface1, which1) -> {
+                                .setNegativeButton("Deny & EXIT", (dialogInterface1, which1) -> {
                                     MainActivity.this.finish(); // close class MainActivity
 //                                                                           alternatively can use
 //                                                android.os.Process.killProcess(android.os.Process.myPid());   // kill all the running processes in the app and exit
@@ -396,14 +435,15 @@ public class MainActivity extends AppCompatActivity {
         if (bluetoothAdapter.isEnabled()) {
             new AlertDialog.Builder(context)
                     .setCancelable(false)
-                    .setMessage("This app requires bluetooth to be ON to function well. \nDo you still want to power off Bluetooth?")
-                    .setPositiveButton("YES", (dialogInterface, which) -> {
+                    .setMessage("This app requires bluetooth ON for it functionality. \nDo you still want to turn off Bluetooth?")
+                    .setPositiveButton("Turn Off", (dialogInterface, which) -> {
                         bluetoothAdapter.disable();
+                        btOnOff.setVisibility(View.VISIBLE);
                         btOnOff.setText(R.string.str_bluetooth_off);
-                        textViewBtVsDiscoverableStatus.setText("");
+                        textViewBtVsDiscoverableStatus.setVisibility(View.GONE);
                         Toast.makeText(context, "Bluetooth disabled", Toast.LENGTH_LONG).show();
                     })
-                    .setNegativeButton("NO", (dialogInterface, which) -> {
+                    .setNegativeButton("Cancel", (dialogInterface, which) -> {
 //                            MainActivity.this.finish(); // close the application
                     })
                     .show();
@@ -423,8 +463,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkGalleryPermission() {
         if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, MY_GALLERY_PERMISSION_CODE);
-        }
-        else {
+        } else {
             Intent openGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(openGallery, ADD_PHOTO_REQUEST);
         }
@@ -434,8 +473,7 @@ public class MainActivity extends AppCompatActivity {
     private void checkCameraPermission() {
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
-        }
-        else {
+        } else {
             Intent openCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(openCamera, CAMERA_REQUEST);
         }
@@ -446,12 +484,14 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         // setting photo in image view
-        if (requestCode==ADD_PHOTO_REQUEST && resultCode == RESULT_OK){
+        if (requestCode == ADD_PHOTO_REQUEST && resultCode == RESULT_OK) {
             Uri targetUri = data.getData();
+            textViewDescription.setVisibility(View.VISIBLE);
             textViewDescription.setText(targetUri.toString());
             Bitmap image;
             try {
                 image = BitmapFactory.decodeStream(getContentResolver().openInputStream(targetUri));
+                textViewBtVsDiscoverableStatus.setVisibility(View.GONE);
                 imageViewLoadImage.setImageBitmap(image);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -461,6 +501,7 @@ public class MainActivity extends AppCompatActivity {
         // setting captured image in image view
         if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
             Bitmap capturedPhoto = (Bitmap) data.getExtras().get("data");
+            textViewBtVsDiscoverableStatus.setVisibility(View.GONE);
             imageViewLoadImage.setImageBitmap(capturedPhoto);
         }
 
@@ -516,7 +557,7 @@ public class MainActivity extends AppCompatActivity {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Gallery permission granted", Toast.LENGTH_LONG).show();
 
-                Intent intentGallery=new Intent(Intent.ACTION_GET_CONTENT);
+                Intent intentGallery = new Intent(Intent.ACTION_GET_CONTENT);
                 intentGallery.setType("*/*");
                 intentGallery.addCategory(Intent.CATEGORY_OPENABLE);
 //                startActivity(intentGallery);
@@ -524,25 +565,23 @@ public class MainActivity extends AppCompatActivity {
 
 //                Intent startGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(intentGallery, ADD_PHOTO_REQUEST);
-            }
-            else {
+            } else {
                 Toast.makeText(this, "Gallery permission denied", Toast.LENGTH_LONG).show();
             }
         }
 
         // grant camera permission
-            if (requestCode == MY_CAMERA_PERMISSION_CODE) {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(this, "Camera permission granted", Toast.LENGTH_LONG).show();
+        if (requestCode == MY_CAMERA_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "Camera permission granted", Toast.LENGTH_LONG).show();
 
-                    Intent startCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(startCamera, CAMERA_REQUEST);
-                }
-                else {
-                    Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
-                }
+                Intent startCamera = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(startCamera, CAMERA_REQUEST);
+            } else {
+                Toast.makeText(this, "Camera permission denied", Toast.LENGTH_LONG).show();
             }
         }
+    }
 
     @Override
     protected void onDestroy() {

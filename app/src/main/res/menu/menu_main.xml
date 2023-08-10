@@ -8,39 +8,4 @@
         android:title="@string/str_menu_bluetooth"
         app:showAsAction="ifRoom|withText" />
 
-    <item
-        android:id="@+id/menu_settings"
-        android:title="@string/str_menu_settings"
-        android:icon="@drawable/ic_settings"
-        app:showAsAction="collapseActionView" />
-
-    <item
-        android:id="@+id/menu_checkUpdates"
-        android:title="@string/str_menu_updates"
-        android:icon="@drawable/ic_update"
-        app:showAsAction="collapseActionView" />
-
-    <item
-        android:id="@+id/menu_shareApp"
-        android:title="@string/str_menu_share"
-        android:icon="@drawable/ic_baseline_share_24"
-        app:showAsAction="collapseActionView" />
-
-    <item
-        android:id="@+id/menu_moreApps"
-        android:title="@string/str_menu_MoreApps"
-        android:icon="@drawable/ic_apps"
-        app:showAsAction="collapseActionView" />
-
-    <item
-        android:id="@+id/menu_about"
-        android:title="@string/str_menu_about"
-        app:showAsAction="collapseActionView" />
-
-    <item
-        android:id="@+id/menu_help"
-        android:title="@string/str_menu_help"
-        android:icon="@drawable/ic_help"
-        app:showAsAction="collapseActionView" />
-
 </menu>

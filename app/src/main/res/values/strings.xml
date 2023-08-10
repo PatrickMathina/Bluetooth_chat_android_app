@@ -2,17 +2,17 @@
     <!--    manifest-->
     <string name="app_name">BluChat</string>
 
-   <!--    MainActivity.java-->
+    <!--    MainActivity.java-->
     <string name="str_bluetooth_on">Bluetooth: ON</string>
     <string name="str_bluetooth_off">Bluetooth: OFF</string>
 
     <!--    activity_device_list.xml-->
-    <string name="str_scanning">Scanning…</string>
-    <string name="str_noPairedDevices"> </string>
+    <string name="str_scanning">Scanning for available devices…</string>
+    <string name="str_noPairedDevices">No paired device found </string>
     <string name="str_scanFinished">Scan finished </string>
     <string name="str_available_devices">\tAvailable Devices</string>
     <string name="str_clickSearch">Click the search button bellow to start scanning for the available bluetooth devices</string>
-    <string name="str_paired_devices">\n\tPaired Devices (Previously connected devices)</string>
+    <string name="str_paired_devices">\n\tPaired Devices</string>
     <string name="str_clickIfAlreadyPaired">No need to scan for devices if you had previously paired with the device you want to chat with.\nClick on the device to start the chat.</string>
 
     <!--    activity_main.xml-->
@@ -25,7 +25,7 @@
     <string name="str_noInternetR">NO INTERNET CONNECTION REQUIRED</string>
 
     <!--    device_list_item.xml-->
-        <!--    no string value used-->
+    <!--    no string value used-->
 
     <!--    menu_device_list.xml-->
     <string name="str_menu_scan_devices"> Scan Devices</string>
@@ -38,7 +38,6 @@
     <string name="str_menu_updates"> Check Updates</string>
     <string name="str_menu_share"> Share App</string>
     <string name="str_menu_MoreApps"> More Apps</string>
-    <string name="str_menu_about"> About</string>
     <string name="str_menu_help">Help &amp; feedback</string>
 
     <string name="todo">TODO</string>
@@ -58,5 +57,11 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="str_menu_comm">Communication</string>
+    <string name="str_help">Help</string>
+    <string name="str_developer">Developer</string>
+    <string name="str_menu_open">Open</string>
+    <string name="str_menu_close">Close</string>
+    <string name="feedback">Hi there, My name is Patrick Mutani and I am the developer behind this app. \n If you have any questions or suggestions, do not hesitate to contact me. \n\nGive me feedback on:</string>
 
 </resources>

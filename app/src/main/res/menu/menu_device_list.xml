@@ -7,10 +7,4 @@
         android:title="@string/str_menu_scan_devices"
         app:showAsAction="collapseActionView" />
 
-    <!--    <item-->
-    <!--        android:id="@+id/menu_back"-->
-    <!--        android:title="@string/str_menu_back"-->
-    <!--        android:icon="@drawable/ic_arrow_back"-->
-    <!--        app:showAsAction="ifRoom" />-->
-
 </menu>

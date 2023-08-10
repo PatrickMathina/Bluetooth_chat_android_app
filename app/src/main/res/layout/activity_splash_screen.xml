@@ -1,38 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentBottom="true"
-    android:visibility="visible"
-    tools:context=".SplashScreen"
-    tools:visibility="visible">
+    tools:context=".SplashScreen">
 
-    <TextView
-        android:id="@+id/idWelcome"
+    <ImageView
+        android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginVertical="400dp"
-        android:layout_marginStart="125dp"
-        android:gravity="center"
-        android:text="@string/str_welcome"
-        android:textColor="#0018EE"
-        android:textSize="30sp"
-        android:textStyle="bold" />
+        android:src="@mipmap/ic_launcher_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/logo" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginVertical="260dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:gravity="center"
-        android:text="@string/str_noInternetR"
-        android:textColor="#0018EE"
-        android:textSize="22sp"
-        android:textStyle="bold" />
+        android:text="Checking bluetooth status..."
+        android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/progress" />
 
-</RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <!--<TextView-->
+    <!--android:id="@+id/idWelcome"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginVertical="400dp"-->
+    <!--android:layout_marginStart="125dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/str_welcome"-->
+    <!--android:textColor="#0018EE"-->
+    <!--android:textSize="30sp"-->
+    <!--android:textStyle="bold" />-->
+
+
+    <!--<TextView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginVertical="260dp"-->
+    <!--android:layout_marginStart="30dp"-->
+    <!--android:layout_marginEnd="30dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="@string/str_noInternetR"-->
+    <!--android:textColor="#0018EE"-->
+    <!--android:textSize="22sp"-->
+    <!--android:textStyle="bold" />-->

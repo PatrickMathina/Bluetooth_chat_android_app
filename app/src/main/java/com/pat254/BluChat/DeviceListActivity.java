@@ -1,7 +1,5 @@
 package com.pat254.BluChat;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -17,6 +15,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -30,6 +31,7 @@ public class DeviceListActivity extends AppCompatActivity {
     private TextView stateDescriptionClick;
     private TextView showScanning;
     private TextView clickIfAlreadyPaired;
+    FloatingActionButton floatingActionButtonScan;
     private ArrayAdapter<String> adapterAvailableDevices;
     private ArrayAdapter<String> adapterPairedDevices;
     private Context context;
@@ -39,31 +41,34 @@ public class DeviceListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_device_list);
+        this.setTitle("Available & Paired Devices");
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); //to set the back arrow button on the action bar
         context = this; //initializing context
         inBluChat2();
+        scanDevices();
     }
 
     private void inBluChat2() {
+        progressScanDevices = findViewById(R.id.progress_scan_devices);
+        floatingActionButtonScan = findViewById(R.id.floatingActionBtnScan);
+        stateDescriptionClick = findViewById(R.id.stateDescriptionC);
+        showScanning = findViewById(R.id.scanning___);
+        clickIfAlreadyPaired = findViewById(R.id.clickIfAlreadyPairedD);
+        TextView noPairedDevices = findViewById(R.id.noPairedDevices);
+
         ListView listPairedDevices = findViewById(R.id.list_paired_devices);
         ListView listAvailableDevices = findViewById(R.id.list_available_devices);
-        progressScanDevices = findViewById(R.id.progress_scan_devices);
-        FloatingActionButton floatingActionButtonScan = findViewById(R.id.floatingActionBtnScan);
-        stateDescriptionClick=findViewById(R.id.stateDescriptionC);
-        showScanning=findViewById(R.id.scanning___);
-        clickIfAlreadyPaired=findViewById(R.id.clickIfAlreadyPairedD);
-        TextView noPairedDevices = findViewById(R.id.noPairedDevices);
-        adapterPairedDevices = new ArrayAdapter<>(context, R.layout.device_list_item);
-        adapterAvailableDevices = new ArrayAdapter<>(context, R.layout.device_list_item);
 
-        // Add OnClickListener - for floatingActionButtonScan
-        floatingActionButtonScan.setOnClickListener(v -> scanDevices());
+        adapterAvailableDevices = new ArrayAdapter<>(context, R.layout.device_list_item);
+        adapterPairedDevices = new ArrayAdapter<>(context, R.layout.device_list_item);
 
         //setting adapters in the list
-        listPairedDevices.setAdapter(adapterPairedDevices);
         listAvailableDevices.setAdapter(adapterAvailableDevices);
+        listPairedDevices.setAdapter(adapterPairedDevices);
 
         //adding onItemClickListener
+        floatingActionButtonScan.setOnClickListener(v -> scanDevices());
+
         listAvailableDevices.setOnItemClickListener((AdapterView, view, i, l) -> {
             String info = ((TextView) view).getText().toString(); //returns the name and address of the clicked device
             String address = info.substring(info.length() - 17); // get the clicked device address
@@ -75,24 +80,24 @@ public class DeviceListActivity extends AppCompatActivity {
         });
         listPairedDevices.setOnItemClickListener((AdapterView, view, i, l) -> {
             String info = ((TextView) view).getText().toString(); //returns the name and address of the clicked device
-            String address1 = info.substring(info.length() - 17); // get the clicked device address
+            String address = info.substring(info.length() - 17); // get the clicked device address
             //pass the device address back to the MainActivity
             Intent intent = new Intent();
-            intent.putExtra("deviceAddress", address1);
+            intent.putExtra("deviceAddress", address);
             setResult(RESULT_OK, intent);
             finish();
         });
 
-       // Listing paired devices
+        // Listing paired devices
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter(); // Initializing bluetoothAdapter
         Set<BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices(); // returns all paired devices
         if (pairedDevices != null && pairedDevices.size() > 0) { // if pairedDevice is not empty and there is at least 1 paired device
             for (BluetoothDevice device : pairedDevices) { // loop/add BluetoothDevice device with pairedDevices
-                adapterPairedDevices.add( device.getName() + "\n" +  device.getAddress()); // list paired devices in adapterPairedDevices- device name and address
+                adapterPairedDevices.add(device.getName() + "\n" + device.getAddress()); // list paired devices in adapterPairedDevices- device name and address
             }
-        }
-        else { //if (pairedDevices == null && pairedDevices.size() == 0)
-            clickIfAlreadyPaired.setText("");
+        } else { //if (pairedDevices == null && pairedDevices.size() == 0)
+            clickIfAlreadyPaired.setVisibility(View.GONE);
+//            clickIfAlreadyPaired.setText("");
             noPairedDevices.setText(R.string.str_noPairedDevices);
         }
 
@@ -112,15 +117,16 @@ public class DeviceListActivity extends AppCompatActivity {
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE); // found the device
                 if (device.getBondState() != BluetoothDevice.BOND_BONDED) { // if device is not paired device,
-                    adapterAvailableDevices.add( device.getName() + "\n" +  device.getAddress()); //add it to the AvailableDeviceAdapter - device name and address
+                    adapterAvailableDevices.add(device.getName() + "\n" + device.getAddress()); //add it to the AvailableDeviceAdapter - device name and address
                 }
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) { //if the discovering of the devices was finished
-                progressScanDevices.setVisibility(View.GONE); // hide the progress bar
+                floatingActionButtonScan.setVisibility(View.VISIBLE);
+                stateDescriptionClick.setVisibility(View.VISIBLE);
+                progressScanDevices.setVisibility(View.GONE);
+                showScanning.setText(R.string.str_scanFinished);
                 if (adapterAvailableDevices.getCount() == 0) { //if no devices found
-                    showScanning.setText(R.string.str_scanFinished);
-                    stateDescriptionClick.setText("No new device found.\nClick the scan button bellow to start scanning again.");
+                    stateDescriptionClick.setText("No new device found.\nClick the scan button bellow to rescan");
                 } else if (adapterAvailableDevices.getCount() > 0) { // if found at least 1 available device
-                    showScanning.setText(R.string.str_scanFinished);
                     stateDescriptionClick.setText("Click on the device to connect and start the chat.\nClick the scan button to start scanning again.");
                 }
             }
@@ -138,21 +144,24 @@ public class DeviceListActivity extends AppCompatActivity {
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int n= item.getItemId();
+        int n = item.getItemId();
 
-        if (n==android.R.id.home) { //back arrow button on the action bar
+        if (n == android.R.id.home) { //back arrow button on the action bar
             onBackPressed();
             return true;
         }
         if (n == R.id.menu_scan_devices) {
-            scanDevices();
-            return true; //'return true' coz this function expect a boolean value
+            if (bluetoothAdapter.isDiscovering()) {
+                Toast.makeText(getApplicationContext(), "Scan in progress", Toast.LENGTH_SHORT).show();
+            } else {
+                scanDevices();
+                return true; //'return true' coz this function expect a boolean value
+            }
 
             /*
              switch (item.getItemId()) {
-                 case R.id.menu_scan_devices:
-                     scanDevices(); //calling function scanDevices()
-                     return true; //'return true' coz this function expect a boolean value
+                 case R.id.menu_scan_
+                     return true;
                  default:
                      return super.onOptionsItemSelected(item);
              }
@@ -162,18 +171,16 @@ public class DeviceListActivity extends AppCompatActivity {
     }
 
     private void scanDevices() {
-        progressScanDevices.setVisibility(View.VISIBLE); //show progress bar when floatingActionButtonScan is clicked
-        adapterAvailableDevices.clear();//clear all the available devices - to get the currently available devices
-        stateDescriptionClick.setText("");
+        showScanning.setVisibility(View.VISIBLE);
+        progressScanDevices.setVisibility(View.VISIBLE);
+        adapterAvailableDevices.clear();
+        stateDescriptionClick.setVisibility(View.GONE);
+        floatingActionButtonScan.setVisibility(View.GONE);
         showScanning.setText(R.string.str_scanning);
-        clickIfAlreadyPaired.setText("");
 
         if (bluetoothAdapter.isDiscovering()) { //if bluetoothAdapter is currently looking for available devices
             bluetoothAdapter.cancelDiscovery(); // if so, cancel it
         }
         bluetoothAdapter.startDiscovery();     // and start again
-        progressScanDevices.setVisibility(View.VISIBLE);
-        stateDescriptionClick.setText("");
-        showScanning.setText(R.string.str_scanning);
     }
 }

@@ -8,6 +8,14 @@
         android:normalScreens="true"
         android:smallScreens="true" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+
+            <data android:scheme="*" />
+        </intent>
+    </queries>
+
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -26,6 +34,12 @@
         android:roundIcon="@mipmap/ic_launcher_icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.BluChat">
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DeveloperActivity"
+            android:exported="false" />
         <activity
             android:name=".SplashScreen"
             android:exported="true">
