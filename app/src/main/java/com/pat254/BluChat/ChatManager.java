@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -26,7 +27,7 @@ public class ChatManager {
     private int State;
 
     // Unique UUID for this application
-    private static final  UUID APP_UUID =UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66"); // fa87c0d0-afac-11de-8a39-0800200c9a66 //31cc6afa-e582-4a07-affa-27dde939cdb// ?001101-0000-1000-8000-00805F9B34FB
+    private static final UUID APP_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66"); // fa87c0d0-afac-11de-8a39-0800200c9a66 //31cc6afa-e582-4a07-affa-27dde939cdb// ?001101-0000-1000-8000-00805F9B34FB
 
     // Name when creating server socket
     private static final String APP_NAME = "BluChat";
@@ -364,8 +365,7 @@ public class ChatManager {
                     bytes = inputStream.read(buffer);
 
                     // Send the obtained bytes to the UI Activity
-                    handler.obtainMessage(MainActivity.MESSAGE_READ, bytes,
-                            -1, buffer).sendToTarget();
+                    handler.obtainMessage(MainActivity.MESSAGE_READ, bytes, -1, buffer).sendToTarget();
                 } catch (IOException e) {
                     connectionLost();
                     // Start the service over to restart listening mode
@@ -401,11 +401,11 @@ public class ChatManager {
 //        // Performing this check in onResume() covers the case in which BT was
 //        // not enabled during onStart(), so we were paused to enable it...
 //        // onResume() will be called when ACTION_REQUEST_ENABLE activity returns.
-//        if (ChatUtils != null) {
+//        if (chatManager != null) {
 //            // Only if the state is STATE_NONE, do we know that we haven't started already
-//            if (ChatUtils.getState() == ChatUtils.STATE_NONE) {
+//            if (chatManager.getState() == ChatManager.STATE_NONE) {
 //                // Start the Bluetooth chat services
-//                ChatUtils.this.start();
+//                ChatManager.this.start();
 //            }
 //
 //        }

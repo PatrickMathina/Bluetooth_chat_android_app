@@ -37,6 +37,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -46,14 +47,13 @@ import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
+    DB_Manager db_manager;
 
-    //    DBHandler dbHandler;
-//    static int count = 0;
-//    ChatListAdapter mConversationArrayAdapter;
     public DrawerLayout drawerLayout;
     public NavigationView navigationView;
     public ActionBarDrawerToggle actionBarDrawerToggle;
-    private ListView listMainChat;
+    private ListView listViewChat;
+    RecyclerView recyclerView;
     private Context context;
     private BluetoothAdapter bluetoothAdapter;
     private ChatManager chatManager;
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     private final Handler handler = new Handler(new Handler.Callback() {
         @Override
-        public boolean handleMessage(Message message) {
+        public boolean handleMessage(@NonNull Message message) {
             switch (message.what) {
                 case MESSAGE_STATE_CHANGED:
                     switch (message.arg1) {
@@ -110,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
 
                     // construct a string from the buffer
                     String outputBuffer = new String(buffer1);
-//                    String outputBufferBitmap = String.valueOf(bitmap1);
                     adapterMainChat.add("Me: " + outputBuffer + "\n");
+                    db_manager.addChatMessages("Me", connectedDevice, outputBuffer);
+
                     break;
                 case MESSAGE_READ:
                     byte[] buffer2 = (byte[]) message.obj;
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     // construct a string from the valid bytes in the buffer
                     String inputBuffer = new String(buffer2, 0, message.arg1);
                     adapterMainChat.add("\n" + connectedDevice + ": " + inputBuffer + "\n");
+//                    db_manager.addChatMessages("Me", connectedDevice, inputBuffer);
                     break;
                 case MESSAGE_DEVICE_NAME:
                     // save and display the connected device's name
@@ -176,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {
             return true;
@@ -283,7 +285,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        listMainChat = findViewById(R.id.list_conversation);
+        listViewChat = findViewById(R.id.list_conversation);
+//        recyclerView=findViewById(R.id.recycler_view);
         ImageView imageViewAddPhoto = findViewById(R.id.add_photo);
         ImageView imageViewStartCamera = findViewById(R.id.start_camera);
         ImageView imageViewEmoji = findViewById(R.id.imgVw_emoji);
@@ -296,7 +299,7 @@ public class MainActivity extends AppCompatActivity {
         btOnOff = findViewById(R.id.BtOnOff);
 
         adapterMainChat = new ArrayAdapter<>(context, R.layout.device_list_item);
-        listMainChat.setAdapter(adapterMainChat); //setting adapter
+        listViewChat.setAdapter(adapterMainChat); //setting adapter
 
         //Adding onClickListener
         imageViewAddPhoto.setOnClickListener(v -> checkGalleryPermission());

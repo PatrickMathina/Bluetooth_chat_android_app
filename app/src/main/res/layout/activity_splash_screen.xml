@@ -39,31 +39,3 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-    <!--<TextView-->
-    <!--android:id="@+id/idWelcome"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_marginVertical="400dp"-->
-    <!--android:layout_marginStart="125dp"-->
-    <!--android:gravity="center"-->
-    <!--android:text="@string/str_welcome"-->
-    <!--android:textColor="#0018EE"-->
-    <!--android:textSize="30sp"-->
-    <!--android:textStyle="bold" />-->
-
-
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentBottom="true"-->
-    <!--android:layout_marginVertical="260dp"-->
-    <!--android:layout_marginStart="30dp"-->
-    <!--android:layout_marginEnd="30dp"-->
-    <!--android:gravity="center"-->
-    <!--android:text="@string/str_noInternetR"-->
-    <!--android:textColor="#0018EE"-->
-    <!--android:textSize="22sp"-->
-    <!--android:textStyle="bold" />-->
